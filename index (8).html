@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" data-theme="neon"><head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>لوحة المؤشرات التفاعلية</title>
+<style>
+:root{--bg:radial-gradient(circle at 20% 0,#12204a,#070b1e 60%);--gl:rgba(18,28,64,.55);--bd:rgba(0,240,255,.25);--tx:#e8f1ff;--mu:#8fa3c7;--c1:#00f0ff;--c2:#b55fe6;--c3:#00ff9d;--c4:#ff007f;--in:rgba(255,255,255,.07)}
+[data-theme=glass]{--bg:linear-gradient(135deg,#1b3a5c,#3b2a5e 55%,#124a4f);--gl:rgba(255,255,255,.14);--bd:rgba(255,255,255,.35);--tx:#fff;--mu:#d0dcef;--in:rgba(255,255,255,.15)}
+[data-theme=bright]{--bg:linear-gradient(135deg,#eaf3ff,#fdf0fb);--gl:rgba(255,255,255,.8);--bd:rgba(80,100,200,.25);--tx:#1c2540;--mu:#5d6b8a;--c1:#0a7fd1;--c2:#8a3fc0;--c3:#0f9d63;--c4:#d6246e;--in:rgba(0,0,60,.06)}
+*{box-sizing:border-box}
+body{margin:0;min-height:100vh;background:var(--bg) fixed;color:var(--tx);font-family:Tahoma,"Segoe UI",Arial,sans-serif}
+button{font-family:inherit;cursor:pointer;border:0;color:#041020;font-weight:700;border-radius:10px;padding:10px 18px;font-size:14px;transition:.25s}
+button:hover{transform:translateY(-2px)}
+header{position:sticky;top:0;z-index:20;display:flex;align-items:center;gap:14px;padding:14px 24px;background:rgba(8,14,40,.75);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:2px solid var(--c1);box-shadow:0 2px 18px rgba(0,240,255,.35)}
+[data-theme=bright] header{background:rgba(255,255,255,.8)}
+.header-titles{flex:1;display:flex;flex-direction:column;gap:4px}
+.header-titles h1{margin:0;font-size:20px;color:var(--tx)}
+.header-titles p{margin:0;font-size:14px;color:var(--c1);font-weight:600}
+.ico{font-size:30px;color:var(--c1);text-shadow:0 0 12px var(--c1),0 0 28px var(--c1)}
+#th{background:var(--in);color:var(--tx);border:1px solid var(--bd)}
+main{max-width:1300px;margin:auto;padding:18px}
+.gl{background:var(--gl);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border:1px solid var(--bd);border-radius:16px;padding:16px}
+.kp{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:14px}
+.k{position:relative;overflow:hidden;animation:up .6s both}
+.k:before{content:"";position:absolute;top:0;left:0;right:0;height:4px;background:var(--c);box-shadow:0 0 14px var(--c)}
+.k span{color:var(--mu);font-size:13px}.k b{display:block;font-size:28px;margin-top:6px;color:var(--c);text-shadow:0 0 10px var(--c)}
+.k i{position:absolute;left:14px;top:18px;font-size:30px;font-style:normal;opacity:.9;filter:drop-shadow(0 0 8px var(--c))}
+@keyframes up{from{opacity:0;transform:translateY(16px)}}
+.ac{display:flex;flex-wrap:wrap;gap:12px;margin:18px 0}
+.b1{background:linear-gradient(135deg,#00f0ff,#0072ff);box-shadow:0 0 18px rgba(0,240,255,.6)}
+.b2{background:linear-gradient(135deg,#d58bff,#6a1bd1);color:#fff;box-shadow:0 0 18px rgba(181,95,230,.6)}
+.b3{background:linear-gradient(135deg,#00ff9d,#00a86b);box-shadow:0 0 18px rgba(0,255,157,.55)}
+.b-opt{background:var(--in);color:var(--tx);border:1px solid var(--c1);box-shadow:0 0 10px rgba(0,240,255,.2)}
+.b-opt:hover{background:var(--c1);color:#041020;box-shadow:0 0 15px var(--c1)}
+.gr{display:grid;grid-template-columns:repeat(auto-fit,minmax(360px,1fr));gap:14px}
+.gr h3{margin:0 0 8px;font-size:15px;color:var(--c1)}
+svg{width:100%;height:240px;overflow:visible}svg text{fill:var(--tx);font-size:11px;font-family:inherit}
+.bb{transform-box:fill-box;transform-origin:bottom;animation:gw .9s both;transition:.2s;cursor:pointer}.bb:hover,.sl:hover{filter:brightness(1.4)}
+.sl{transition:.2s;cursor:pointer}
+@keyframes gw{from{transform:scaleY(0)}}
+.pr{margin:9px 0;font-size:12px}.pr div{height:10px;background:var(--in);border-radius:6px;margin-top:4px;overflow:hidden}.pr u{display:block;height:100%;border-radius:6px;transition:width 1s}
+.fb{display:flex;flex-wrap:wrap;gap:10px;margin:20px 0 10px;align-items:center}
+input,select,textarea{background:var(--in);color:var(--tx);border:1px solid var(--bd);border-radius:9px;padding:9px;font-family:inherit;font-size:14px}
+select option{color:#111}
+.fb input{flex:1;min-width:200px}
+.tw{overflow-x:auto}table{width:100%;border-collapse:collapse;font-size:14px}
+th{padding:10px;text-align:right;color:var(--c1);border-bottom:2px solid var(--c1)}
+td{padding:9px;border-bottom:1px solid var(--bd)}
+tbody tr{transition:.2s}
+tbody tr:hover{filter:brightness(1.2);box-shadow:inset 0 0 14px rgba(0,240,255,.25)}
+.sc{color:var(--c3);cursor:pointer;text-decoration:underline dotted}
+.ib{background:none;color:var(--tx);padding:4px 8px;font-size:17px}
+.ov{position:fixed;inset:0;background:rgba(0,0,10,.6);display:none;place-items:center;z-index:50;padding:14px}.ov.on{display:grid}
+.md{position:relative;width:min(600px,100%);max-height:92vh;overflow:auto;background:rgba(14,22,52,.85);backdrop-filter:blur(15px);-webkit-backdrop-filter:blur(15px);border:1px solid var(--c1);border-radius:18px;padding:22px;box-shadow:0 0 30px rgba(0,240,255,.3);animation:up .3s;color:#e8f1ff}
+[data-theme=bright] .md{background:rgba(255,255,255,.92);color:#1c2540}
+.md.w{width:min(1150px,100%)}.md h2{margin:0 0 12px;color:var(--c1)}
+.x{position:absolute;top:12px;left:14px;background:none;color:#ff007f;font-size:24px;text-shadow:0 0 10px #ff007f;padding:2px 8px}
+.fm{display:grid;gap:8px}.fm label{font-size:13px;color:var(--mu)}.fm input,.fm select,.fm textarea{width:100%}
+[data-theme=bright] .md .fm label{color:#5d6b8a}
+#tt{position:fixed;bottom:20px;right:20px;display:grid;gap:8px;z-index:99}
+.t{background:rgba(0,255,157,.9);color:#032;padding:11px 18px;border-radius:10px;font-weight:700;box-shadow:0 0 16px #00ff9d;animation:up .3s}.t.e{background:#ff007f;color:#fff;box-shadow:0 0 16px #ff007f}
+#cb{position:fixed;bottom:20px;left:20px;width:60px;height:60px;border-radius:50%;font-size:26px;background:linear-gradient(135deg,#00f0ff,#b55fe6,#ff007f);box-shadow:0 0 22px #00f0ff;z-index:60;animation:pl 2s infinite}
+@keyframes pl{50%{box-shadow:0 0 36px #b55fe6}}
+#cw{position:fixed;bottom:92px;left:20px;width:340px;max-width:92vw;height:400px;display:none;flex-direction:column;z-index:60;padding:0;overflow:hidden}
+#cw.on{display:flex}#cw .h{padding:11px 14px;background:rgba(0,240,255,.18);color:var(--c1);font-weight:700}
+#cm{flex:1;overflow:auto;padding:10px;display:grid;gap:7px;align-content:start}
+.m{padding:8px 11px;border-radius:12px;font-size:13px;max-width:88%;line-height:1.7;background:var(--in);white-space:pre-line}.m.u{justify-self:end;background:var(--c1);color:#041020}
+#cw .f{display:flex;gap:6px;padding:8px;border-top:1px solid var(--bd)}#cw .f input{flex:1}#cw .f button{padding:8px 12px;background:var(--c1)}
+.wide{grid-column:1/-1}.bigw{overflow-x:auto}.bigw svg{height:auto;min-width:720px}
+</style>
+</head>
+<body>
+<header>
+<span class="ico">⛈</span>
+<div class="header-titles">
+  <h1>وزارة النقل والاتصالات وتقنية المعلومات</h1>
+  <p>المديرية العامة للشؤون البحرية</p>
+</div>
+<button id="th" onclick="nextTheme()">🎨 تغيير الثيم</button>
+</header>
+
+<main>
+
+<section class="kp">
+<div class="gl k" style="--c:#00f0ff"><i>💰</i><span>إجمالي الإيرادات</span><b id="k1">1,672,835</b></div>
+<div class="gl k" style="--c:#b55fe6"><i>📜</i><span>إجمالي الشهادات</span><b id="k2">12,998</b></div>
+<div class="gl k" style="--c:#00ff9d"><i>🏢</i><span>عدد الأقسام المسجلة</span><b id="k3">5</b></div>
+<div class="gl k" style="--c:#ff007f"><i>🎯</i><span>نسبة الإنجاز السنوي</span><b id="k4">54%</b></div>
+</section>
+
+<div class="ac">
+<button class="b1" onclick="openEntry()">➕ إدخال البيانات</button>
+<button class="b2" onclick="openAll()">✏️ تعديل كافة البيانات</button>
+<button class="b3" onclick="dl()">⬇️ تنزيل الصفحة</button>
+<button class="b-opt" onclick="openWeb(1)">🔗 الهيكل التنظيمي</button>
+<button class="b-opt" onclick="openWeb(2)">🔗 الحوادث البحرية</button>
+<button class="b-opt" onclick="openWeb(3)">🔗 الدليل الاسترشاي</button>
+<button class="b-opt" onclick="openWeb(4)">🔗 Option 4</button>
+</div>
+
+<section class="gr">
+<div class="gl"><h3>الإيرادات حسب الأقسام</h3><div id="c1"><svg viewBox="0 0 400 240"><rect class="bb" x="10" y="40" width="64" height="150" rx="5" fill="#00f0ff" style="filter:drop-shadow(0 0 6px #00f0ff);animation-delay:0s"><title>قسم السلامة البحرية:208,213</title></rect><text x="42" y="33" text-anchor="middle">208,213</text><text x="42" y="206" text-anchor="middle">السلامة البحرية</text><rect class="bb" x="86" y="182.6517556540658" width="64" height="7.348244345934212" rx="5" fill="#b55fe6" style="filter:drop-shadow(0 0 6px #b55fe6);animation-delay:0.1s"><title>أمن السفن والموانئ:10,200</title></rect><text x="118" y="175.6517556540658" text-anchor="middle">10,200</text><text x="118" y="206" text-anchor="middle">أمن السفن والموانئ</text><rect class="bb" x="162" y="107.17880247631032" width="64" height="82.82119752368968" rx="5" fill="#00ff9d" style="filter:drop-shadow(0 0 6px #00ff9d);animation-delay:0.2s"><title>الأنشطة البحرية:114,963</title></rect><text x="194" y="100.17880247631032" text-anchor="middle">114,963</text><text x="194" y="206" text-anchor="middle">الأنشطة البحرية</text><rect class="bb" x="238" y="147.65754299683496" width="64" height="42.34245700316503" rx="5" fill="#ff007f" style="filter:drop-shadow(0 0 6px #ff007f);animation-delay:0.30000000000000004s"><title>شؤون البحارة:58,775</title></rect><text x="270" y="140.65754299683496" text-anchor="middle">58,775</text><text x="270" y="206" text-anchor="middle">شؤون البحارة</text><rect class="bb" x="314" y="48.13926123729067" width="64" height="141.86073876270933" rx="5" fill="#ffd400" style="filter:drop-shadow(0 0 6px #ffd400);animation-delay:0.4s"><title>أقسام تسجيل السفن:196,915</title></rect><text x="346" y="41.13926123729067" text-anchor="middle">196,915</text><text x="346" y="206" text-anchor="middle">أقسام تسجيل السفن</text></svg></div></div>
+<div class="gl"><h3>توزيع الإيرادات بين الدوائر</h3><div id="c2"><svg viewBox="0 0 400 240"><path class="sl" fill="#00f0ff" d="M300,30A90,90 0 0 1 365.3050388899146,181.92941058646318L337.7318002475062,155.78143722773427A52,52 0 0 0 300,68Z"><title>دائرة الملاحة و السلامة البحرية: 218,413 (37%)</title></path><path class="sl" fill="#b55fe6" d="M365.3050388899146,181.92941058646318A90,90 0 1 1 300,30L300,68A52,52 0 1 0 337.7318002475062,155.78143722773427Z"><title>دائرة النقل البحري: 370,653 (63%)</title></path><text x="300" y="125" text-anchor="middle" style="font-size:14px;font-weight:700">589,066</text><rect x="196" y="14" width="11" height="11" rx="3" fill="#00f0ff"></rect><text x="190" y="23" text-anchor="start"><tspan x="190" dy="0">دائرة الملاحة و السلامة</tspan><tspan x="190" dy="13">البحرية (218,413)</tspan></text><rect x="196" y="51" width="11" height="11" rx="3" fill="#b55fe6"></rect><text x="190" y="60" text-anchor="start"><tspan x="190" dy="0">دائرة النقل البحري (370,653)</tspan></text></svg></div></div>
+<div class="gl"><h3>إنتاجية الأقسام (عدد الشهادات)</h3><div id="c3"><div class="pr">قسم السلامة البحرية — 357 شهادة (8%)<div><u style="width:18.555093555093556%;background:#00f0ff;box-shadow:0 0 8px #00f0ff"></u></div></div><div class="pr">أمن السفن والموانئ — 86 شهادة (2%)<div><u style="width:4.46985446985447%;background:#b55fe6;box-shadow:0 0 8px #b55fe6"></u></div></div><div class="pr">الأنشطة البحرية — 1,358 شهادة (30%)<div><u style="width:70.58212058212058%;background:#00ff9d;box-shadow:0 0 8px #00ff9d"></u></div></div><div class="pr">شؤون البحارة — 1,924 شهادة (42%)<div><u style="width:100%;background:#ff007f;box-shadow:0 0 8px #ff007f"></u></div></div><div class="pr">أقسام تسجيل السفن — 825 شهادة (18%)<div><u style="width:42.87941787941788%;background:#ffd400;box-shadow:0 0 8px #ffd400"></u></div></div></div></div>
+<div class="gl"><h3>الإيرادات والشهادات حسب السنة (2020 - 2030)</h3><div id="c4"><svg viewBox="0 0 400 240"><rect class="sl" x="197" y="0" width="6" height="18" rx="4" fill="#00f0ff" opacity=".85"><title>2020: 0 /0</title></rect><text x="395" y="13" text-anchor="end">2020</text><text x="200" y="13" text-anchor="middle" style="fill:#041020;font-weight:700"></text><rect class="sl" x="197" y="21.5" width="6" height="18" rx="4" fill="#b55fe6" opacity=".85"><title>2021: 0 /0</title></rect><text x="395" y="34.5" text-anchor="end">2021</text><text x="200" y="34.5" text-anchor="middle" style="fill:#041020;font-weight:700"></text><rect class="sl" x="197" y="43" width="6" height="18" rx="4" fill="#00ff9d" opacity=".85"><title>2022: 0 /0</title></rect><text x="395" y="56" text-anchor="end">2022</text><text x="200" y="56" text-anchor="middle" style="fill:#041020;font-weight:700"></text><rect class="sl" x="197" y="64.5" width="6" height="18" rx="4" fill="#ff007f" opacity=".85"><title>2023: 0 /0</title></rect><text x="395" y="77.5" text-anchor="end">2023</text><text x="200" y="77.5" text-anchor="middle" style="fill:#041020;font-weight:700"></text><rect class="sl" x="197" y="86" width="6" height="18" rx="4" fill="#ffd400" opacity=".85"><title>2024: 0 /0</title></rect><text x="395" y="99" text-anchor="end">2024</text><text x="200" y="99" text-anchor="middle" style="fill:#041020;font-weight:700"></text><rect class="sl" x="197" y="107.5" width="6" height="18" rx="4" fill="#ff8a00" opacity=".85"><title>2025: 0 /0</title></rect><text x="395" y="120.5" text-anchor="end">2025</text><text x="200" y="120.5" text-anchor="middle" style="fill:#041020;font-weight:700"></text><rect class="sl" x="70" y="129" width="260" height="18" rx="4" fill="#00f0ff" opacity=".85"><title>2026: 589,066 /4550</title></rect><text x="395" y="142" text-anchor="end">2026</text><text x="200" y="142" text-anchor="middle" style="fill:#041020;font-weight:700">589,066 | 4550</text><rect class="sl" x="197" y="150.5" width="6" height="18" rx="4" fill="#b55fe6" opacity=".85"><title>2027: 0 /0</title></rect><text x="395" y="163.5" text-anchor="end">2027</text><text x="200" y="163.5" text-anchor="middle" style="fill:#041020;font-weight:700"></text><rect class="sl" x="197" y="172" width="6" height="18" rx="4" fill="#00ff9d" opacity=".85"><title>2028: 0 /0</title></rect><text x="395" y="185" text-anchor="end">2028</text><text x="200" y="185" text-anchor="middle" style="fill:#041020;font-weight:700"></text><rect class="sl" x="197" y="193.5" width="6" height="18" rx="4" fill="#ff007f" opacity=".85"><title>2029: 0 /0</title></rect><text x="395" y="206.5" text-anchor="end">2029</text><text x="200" y="206.5" text-anchor="middle" style="fill:#041020;font-weight:700"></text><rect class="sl" x="197" y="215" width="6" height="18" rx="4" fill="#ffd400" opacity=".85"><title>2030: 0 /0</title></rect><text x="395" y="228" text-anchor="end">2030</text><text x="200" y="228" text-anchor="middle" style="fill:#041020;font-weight:700"></text></svg></div></div>
+<div class="gl"><h3>الشهادات الأكثر عددًا (حلقات)</h3><div id="c5"><svg viewBox="0 0 400 240">
+    <g transform="rotate(-90 292 120)">
+      <circle cx="292" cy="120" r="100" fill="none" stroke="#00f0ff" opacity=".15" stroke-width="10"></circle><circle class="sl" cx="292" cy="120" r="100" fill="none" stroke="#00f0ff" stroke-width="10" stroke-linecap="round" stroke-dasharray="578.053048260522 628.3185307179587" style="filter:drop-shadow(0 0 5px #00f0ff)"><title>وثائق البحارة:1924</title></circle><circle cx="292" cy="120" r="85" fill="none" stroke="#b55fe6" opacity=".15" stroke-width="10"></circle><circle class="sl" cx="292" cy="120" r="85" fill="none" stroke="#b55fe6" stroke-width="10" stroke-linecap="round" stroke-dasharray="346.8017846190855 534.0707511102648" style="filter:drop-shadow(0 0 5px #b55fe6)"><title>الأنشطة البحرية:1358</title></circle><circle cx="292" cy="120" r="70" fill="none" stroke="#00ff9d" opacity=".15" stroke-width="10"></circle><circle class="sl" cx="292" cy="120" r="70" fill="none" stroke="#00ff9d" stroke-width="10" stroke-linecap="round" stroke-dasharray="173.5060474898396 439.822971502571" style="filter:drop-shadow(0 0 5px #00ff9d)"><title>تسجيل-تجديد السفن:825</title></circle><circle cx="292" cy="120" r="55" fill="none" stroke="#ff007f" opacity=".15" stroke-width="10"></circle><circle class="sl" cx="292" cy="120" r="55" fill="none" stroke="#ff007f" stroke-width="10" stroke-linecap="round" stroke-dasharray="45.111572347358305 345.57519189487726" style="filter:drop-shadow(0 0 5px #ff007f)"><title>ترخيص ملاحي للسفن الاجنبية:273</title></circle><circle cx="292" cy="120" r="40" fill="none" stroke="#ffd400" opacity=".15" stroke-width="10"></circle><circle class="sl" cx="292" cy="120" r="40" fill="none" stroke="#ffd400" stroke-width="10" stroke-linecap="round" stroke-dasharray="9.373833215035491 251.32741228718345" style="filter:drop-shadow(0 0 5px #ffd400)"><title>تاشيرات اطقم السفن:78</title></circle><circle cx="292" cy="120" r="25" fill="none" stroke="#ff8a00" opacity=".15" stroke-width="10"></circle><circle class="sl" cx="292" cy="120" r="25" fill="none" stroke="#ff8a00" stroke-width="10" stroke-linecap="round" stroke-dasharray="5.858645759397183 157.07963267948966" style="filter:drop-shadow(0 0 5px #ff8a00)"><title>تصاريح السفن الدبلوماسية:78</title></circle>
+    </g>
+    <rect x="176" y="14" width="11" height="11" rx="3" fill="#00f0ff"></rect><text x="170" y="23" text-anchor="start"><tspan x="170" dy="0">وثائق البحارة (1,924)</tspan></text><rect x="176" y="38" width="11" height="11" rx="3" fill="#b55fe6"></rect><text x="170" y="47" text-anchor="start"><tspan x="170" dy="0">الأنشطة البحرية (1,358)</tspan></text><rect x="176" y="62" width="11" height="11" rx="3" fill="#00ff9d"></rect><text x="170" y="71" text-anchor="start"><tspan x="170" dy="0">تسجيل-تجديد السفن (825)</tspan></text><rect x="176" y="86" width="11" height="11" rx="3" fill="#ff007f"></rect><text x="170" y="95" text-anchor="start"><tspan x="170" dy="0">ترخيص ملاحي للسفن الاجنبية</tspan><tspan x="170" dy="13">(273)</tspan></text><rect x="176" y="123" width="11" height="11" rx="3" fill="#ffd400"></rect><text x="170" y="132" text-anchor="start"><tspan x="170" dy="0">تاشيرات اطقم السفن (78)</tspan></text><rect x="176" y="147" width="11" height="11" rx="3" fill="#ff8a00"></rect><text x="170" y="156" text-anchor="start"><tspan x="170" dy="0">تصاريح السفن الدبلوماسية</tspan><tspan x="170" dy="13">(78)</tspan></text>
+  </svg></div></div>
+<div class="gl"><h3>أداء الأقسام (رادار)</h3><div id="c6"><svg viewBox="0 0 400 240"><polygon points="292,93.95 318.67713528207906,113.33207330778272 308.4873763268039,144.69292669221727 275.5126236731961,144.69292669221727 265.32286471792094,113.33207330778274" fill="none" stroke="var(--bd)"></polygon><polygon points="292,65.9 345.3542705641581,104.66414661556544 324.97475265360777,167.38585338443454 259.02524734639223,167.38585338443457 238.64572943584187,104.66414661556546" fill="none" stroke="var(--bd)"></polygon><polygon points="292,37 372.83980388508803,95.73355547812946 341.96174644486024,190.76644452187054 242.0382535551398,190.76644452187054 211.16019611491194,95.73355547812949" fill="none" stroke="var(--bd)"></polygon><line x1="292" y1="122" x2="292" y2="37" stroke="var(--bd)"></line><text x="292" y="29.10000000000001" text-anchor="middle" style="font-size:10px;fill:var(--c1)">1</text><line x1="292" y1="122" x2="372.83980388508803" y2="95.73355547812946" stroke="var(--bd)"></line><text x="384.15737642900035" y="96.0562532450676" text-anchor="middle" style="font-size:10px;fill:var(--c1)">2</text><line x1="292" y1="122" x2="341.96174644486024" y2="190.76644452187054" stroke="var(--bd)"></line><text x="348.9563909471407" y="204.3937467549324" text-anchor="middle" style="font-size:10px;fill:var(--c1)">3</text><line x1="292" y1="122" x2="242.0382535551398" y2="190.76644452187054" stroke="var(--bd)"></line><text x="235.04360905285938" y="204.3937467549324" text-anchor="middle" style="font-size:10px;fill:var(--c1)">4</text><line x1="292" y1="122" x2="211.16019611491194" y2="95.73355547812949" stroke="var(--bd)"></line><text x="199.84262357099962" y="96.05625324506761" text-anchor="middle" style="font-size:10px;fill:var(--c1)">5</text><polygon class="sl" points="292,106.22817047817048 295.6134215873792,120.82592815546732 327.26406012064456,170.5368147924637 242.0382535551398,190.76644452187054 257.3363626792112,110.73710149140167" fill="#00f0ff" fill-opacity=".25" stroke="#00f0ff" stroke-width="2" style="filter:drop-shadow(0 0 5px #00f0ff)"></polygon><polygon class="sl" points="292,37 295.96020421216684,120.71325165036247 319.5859444729218,159.96879523165126 277.8966459957032,141.41160146951893 215.5467046628591,97.15881850305152" fill="#ff007f" fill-opacity=".25" stroke="#ff007f" stroke-width="2" style="filter:drop-shadow(0 0 5px #ff007f)"></polygon><rect x="176" y="4" width="11" height="11" rx="3" fill="#00f0ff"></rect><text x="170" y="13" text-anchor="start">الشهادات</text><rect x="176" y="24" width="11" height="11" rx="3" fill="#ff007f"></rect><text x="170" y="33" text-anchor="start">الإيرادات</text><circle cx="182" cy="57" r="8" fill="none" stroke="var(--c1)"></circle><text x="182" y="60.5" text-anchor="middle" style="font-size:10px">1</text><text x="168" y="61" text-anchor="start"><tspan x="168" dy="0">السلامة البحرية</tspan></text><circle cx="182" cy="82" r="8" fill="none" stroke="var(--c1)"></circle><text x="182" y="85.5" text-anchor="middle" style="font-size:10px">2</text><text x="168" y="86" text-anchor="start"><tspan x="168" dy="0">أمن السفن والموانئ</tspan></text><circle cx="182" cy="107" r="8" fill="none" stroke="var(--c1)"></circle><text x="182" y="110.5" text-anchor="middle" style="font-size:10px">3</text><text x="168" y="111" text-anchor="start"><tspan x="168" dy="0">الأنشطة البحرية</tspan></text><circle cx="182" cy="132" r="8" fill="none" stroke="var(--c1)"></circle><text x="182" y="135.5" text-anchor="middle" style="font-size:10px">4</text><text x="168" y="136" text-anchor="start"><tspan x="168" dy="0">شؤون البحارة</tspan></text><circle cx="182" cy="157" r="8" fill="none" stroke="var(--c1)"></circle><text x="182" y="160.5" text-anchor="middle" style="font-size:10px">5</text><text x="168" y="161" text-anchor="start"><tspan x="168" dy="0">أقسام تسجيل السفن</tspan></text></svg></div></div>
+<div class="gl wide"><h3>جميع أنواع الشهادات (حلقات)</h3><div id="c7" class="bigw"><svg viewBox="0 0 900 340"><g transform="rotate(-90 730 170)"><circle cx="730" cy="170" r="160" fill="none" stroke="#00f0ff" opacity=".15" stroke-width="12.5"></circle><circle class="sl" cx="730" cy="170" r="160" fill="none" stroke="#00f0ff" stroke-width="12.5" stroke-linecap="round" stroke-dasharray="924.8848772168351 1005.3096491487338"><title>وثائق البحارة: 1,924</title></circle><circle cx="730" cy="170" r="146" fill="none" stroke="#b55fe6" opacity=".15" stroke-width="12.5"></circle><circle class="sl" cx="730" cy="170" r="146" fill="none" stroke="#b55fe6" stroke-width="12.5" stroke-linecap="round" stroke-dasharray="595.6830653457233 917.3450548482195"><title>الأنشطة البحرية: 1,358</title></circle><circle cx="730" cy="170" r="132" fill="none" stroke="#00ff9d" opacity=".15" stroke-width="12.5"></circle><circle class="sl" cx="730" cy="170" r="132" fill="none" stroke="#00ff9d" stroke-width="12.5" stroke-linecap="round" stroke-dasharray="327.18283240941184 829.3804605477054"><title>تسجيل-تجديد السفن: 825</title></circle><circle cx="730" cy="170" r="118" fill="none" stroke="#ff007f" opacity=".15" stroke-width="12.5"></circle><circle class="sl" cx="730" cy="170" r="118" fill="none" stroke="#ff007f" stroke-width="12.5" stroke-linecap="round" stroke-dasharray="96.78482794524145 741.4158662471912"><title>ترخيص ملاحي للسفن الاجنبية: 273</title></circle><circle cx="730" cy="170" r="104" fill="none" stroke="#ffd400" opacity=".15" stroke-width="12.5"></circle><circle class="sl" cx="730" cy="170" r="104" fill="none" stroke="#ffd400" stroke-width="12.5" stroke-linecap="round" stroke-dasharray="24.37196635909228 653.451271946677"><title>تاشيرات اطقم السفن: 78</title></circle><circle cx="730" cy="170" r="90" fill="none" stroke="#ff8a00" opacity=".15" stroke-width="12.5"></circle><circle class="sl" cx="730" cy="170" r="90" fill="none" stroke="#ff8a00" stroke-width="12.5" stroke-linecap="round" stroke-dasharray="21.091124733829858 565.4866776461628"><title>تصاريح السفن الدبلوماسية: 78</title></circle><circle cx="730" cy="170" r="76" fill="none" stroke="hsl(282 85% 60%)" opacity=".15" stroke-width="12.5"></circle><circle class="sl" cx="730" cy="170" r="76" fill="none" stroke="hsl(282 85% 60%)" stroke-width="12.5" stroke-linecap="round" stroke-dasharray="1.8266957034428135 477.5220833456485"><title>شهادة الامتثال الأمنية: 8</title></circle><circle cx="730" cy="170" r="62" fill="none" stroke="hsl(329 85% 60%)" opacity=".15" stroke-width="12.5"></circle><circle class="sl" cx="730" cy="170" r="62" fill="none" stroke="hsl(329 85% 60%)" stroke-width="12.5" stroke-linecap="round" stroke-dasharray="1.117649344869616 389.55748904513433"><title>شهادة مياه الصابورة: 6</title></circle><circle cx="730" cy="170" r="48" fill="none" stroke="hsl(16 85% 60%)" opacity=".15" stroke-width="12.5"></circle><circle class="sl" cx="730" cy="170" r="48" fill="none" stroke="hsl(16 85% 60%)" stroke-width="12.5" stroke-linecap="round" stroke-dasharray="0 301.59289474462014"><title>تركيب المساعدات الملاحية: 0</title></circle></g><rect x="550" y="16" width="10" height="10" rx="3" fill="#00f0ff"></rect><text x="544" y="25" text-anchor="start" style="font-size:10.5px"><title>وثائق البحارة</title>وثائق البحارة (1,924)</text><rect x="550" y="35" width="10" height="10" rx="3" fill="#b55fe6"></rect><text x="544" y="44" text-anchor="start" style="font-size:10.5px"><title>الأنشطة البحرية</title>الأنشطة البحرية (1,358)</text><rect x="550" y="54" width="10" height="10" rx="3" fill="#00ff9d"></rect><text x="544" y="63" text-anchor="start" style="font-size:10.5px"><title>تسجيل-تجديد السفن</title>تسجيل-تجديد السفن (825)</text><rect x="550" y="73" width="10" height="10" rx="3" fill="#ff007f"></rect><text x="544" y="82" text-anchor="start" style="font-size:10.5px"><title>ترخيص ملاحي للسفن الاجنبية</title>ترخيص ملاحي للسفن الاجنبية (273)</text><rect x="550" y="92" width="10" height="10" rx="3" fill="#ffd400"></rect><text x="544" y="101" text-anchor="start" style="font-size:10.5px"><title>تاشيرات اطقم السفن</title>تاشيرات اطقم السفن (78)</text><rect x="282" y="16" width="10" height="10" rx="3" fill="#ff8a00"></rect><text x="276" y="25" text-anchor="start" style="font-size:10.5px"><title>تصاريح السفن الدبلوماسية</title>تصاريح السفن الدبلوماسية (78)</text><rect x="282" y="35" width="10" height="10" rx="3" fill="hsl(282 85% 60%)"></rect><text x="276" y="44" text-anchor="start" style="font-size:10.5px"><title>شهادة الامتثال الأمنية</title>شهادة الامتثال الأمنية (8)</text><rect x="282" y="54" width="10" height="10" rx="3" fill="hsl(329 85% 60%)"></rect><text x="276" y="63" text-anchor="start" style="font-size:10.5px"><title>شهادة مياه الصابورة</title>شهادة مياه الصابورة (6)</text><rect x="282" y="73" width="10" height="10" rx="3" fill="hsl(16 85% 60%)"></rect><text x="276" y="82" text-anchor="start" style="font-size:10.5px"><title>تركيب المساعدات الملاحية</title>تركيب المساعدات الملاحية (0)</text></svg></div></div>
+</section>
+
+<div class="fb">
+<select id="fy" onchange="render()"><option value="">كل السنوات</option><option>2020</option><option>2021</option><option>2022</option><option>2023</option><option>2024</option><option>2025</option><option>2026</option><option>2027</option><option>2028</option><option>2029</option><option>2030</option></select>
+<select id="fc" onchange="render()"><option value="">كل الشهادات</option><option>ترخيص ملاحي للسفن الاجنبية</option><option>شهادة مياه الصابورة</option><option>تركيب المساعدات الملاحية</option><option>تاشيرات اطقم السفن</option><option>شهادة الامتثال الأمنية</option><option>تصاريح السفن الدبلوماسية</option><option>الأنشطة البحرية</option><option>وثائق البحارة</option><option>تسجيل-تجديد السفن</option></select>
+<select id="fs" onchange="render()"><option value="">كل الأقسام</option><option>قسم السلامة البحرية</option><option>أمن السفن والموانئ</option><option>الأنشطة البحرية</option><option>شؤون البحارة</option><option>أقسام تسجيل السفن</option></select>
+<select id="fd" onchange="render()"><option value="">كل الدوائر</option><option>دائرة الملاحة و السلامة البحرية</option><option>دائرة النقل البحري</option></select>
+<input id="q" placeholder="🔍 بحث شامل في كل الحقول..." oninput="render()">
+</div>
+
+<div class="gl tw">
+<table>
+<thead>
+<tr><th>الدائرة</th><th>القسم</th><th>نوع الشهادة</th><th>العدد</th><th>السنة</th><th>الإيرادات</th><th>مدخل البيانات</th><th>إجراءات</th></tr>
+</thead>
+<tbody id="tb"><tr style="background:#00f0ff1f;border-right:4px solid #00f0ff;"><td>دائرة الملاحة و السلامة البحرية</td><td><span class="sc" onclick="info(23)">قسم السلامة البحرية</span></td><td>ترخيص ملاحي للسفن الاجنبية</td><td>273</td><td>2026</td><td>207,613</td><td>احمد الغساني</td><td><button class="ib icon-edit" title="تعديل" onclick="openEntry(23)">✏️</button><button class="ib" title="حذف" onclick="del(23)">🗑️</button></td></tr><tr style="background:#00f0ff1f;border-right:4px solid #00f0ff;"><td>دائرة الملاحة و السلامة البحرية</td><td><span class="sc" onclick="info(24)">قسم السلامة البحرية</span></td><td>شهادة مياه الصابورة</td><td>6</td><td>2026</td><td>600</td><td>احمد الغساني</td><td><button class="ib icon-edit" title="تعديل" onclick="openEntry(24)">✏️</button><button class="ib" title="حذف" onclick="del(24)">🗑️</button></td></tr><tr style="background:#00f0ff1f;border-right:4px solid #00f0ff;"><td>دائرة الملاحة و السلامة البحرية</td><td><span class="sc" onclick="info(25)">قسم السلامة البحرية</span></td><td>تركيب المساعدات الملاحية</td><td>0</td><td>2026</td><td>0</td><td>احمد الغساني</td><td><button class="ib icon-edit" title="تعديل" onclick="openEntry(25)">✏️</button><button class="ib" title="حذف" onclick="del(25)">🗑️</button></td></tr><tr style="background:#00f0ff1f;border-right:4px solid #00f0ff;"><td>دائرة الملاحة و السلامة البحرية</td><td><span class="sc" onclick="info(26)">قسم السلامة البحرية</span></td><td>تاشيرات اطقم السفن</td><td>78</td><td>2026</td><td>0</td><td>احمد الغساني</td><td><button class="ib icon-edit" title="تعديل" onclick="openEntry(26)">✏️</button><button class="ib" title="حذف" onclick="del(26)">🗑️</button></td></tr><tr style="background:#b55fe61f;border-right:4px solid #b55fe6;"><td>دائرة الملاحة و السلامة البحرية</td><td><span class="sc" onclick="info(27)">أمن السفن والموانئ</span></td><td>شهادة الامتثال الأمنية</td><td>8</td><td>2026</td><td>10,200</td><td>احمد الغساني</td><td><button class="ib icon-edit" title="تعديل" onclick="openEntry(27)">✏️</button><button class="ib" title="حذف" onclick="del(27)">🗑️</button></td></tr><tr style="background:#b55fe61f;border-right:4px solid #b55fe6;"><td>دائرة الملاحة و السلامة البحرية</td><td><span class="sc" onclick="info(28)">أمن السفن والموانئ</span></td><td>تصاريح السفن الدبلوماسية</td><td>78</td><td>2026</td><td>0</td><td>احمد الغساني</td><td><button class="ib icon-edit" title="تعديل" onclick="openEntry(28)">✏️</button><button class="ib" title="حذف" onclick="del(28)">🗑️</button></td></tr><tr style="background:#00ff9d1f;border-right:4px solid #00ff9d;"><td>دائرة النقل البحري</td><td><span class="sc" onclick="info(29)">الأنشطة البحرية</span></td><td>الأنشطة البحرية</td><td>1,358</td><td>2026</td><td>114,963</td><td>احمد الغساني</td><td><button class="ib icon-edit" title="تعديل" onclick="openEntry(29)">✏️</button><button class="ib" title="حذف" onclick="del(29)">🗑️</button></td></tr><tr style="background:#ff007f1f;border-right:4px solid #ff007f;"><td>دائرة النقل البحري</td><td><span class="sc" onclick="info(30)">شؤون البحارة</span></td><td>وثائق البحارة</td><td>1,924</td><td>2026</td><td>58,775</td><td>احمد الغساني</td><td><button class="ib icon-edit" title="تعديل" onclick="openEntry(30)">✏️</button><button class="ib" title="حذف" onclick="del(30)">🗑️</button></td></tr><tr style="background:#ffd4001f;border-right:4px solid #ffd400;"><td>دائرة النقل البحري</td><td><span class="sc" onclick="info(31)">أقسام تسجيل السفن</span></td><td>تسجيل-تجديد السفن</td><td>825</td><td>2026</td><td>196,915</td><td>احمد الغساني</td><td><button class="ib icon-edit" title="تعديل" onclick="openEntry(31)">✏️</button><button class="ib" title="حذف" onclick="del(31)">🗑️</button></td></tr></tbody>
+</table>
+</div>
+</main>
+
+<div class="ov" id="m1"><div class="md"><button class="x" onclick="cl('m1')">✖</button><h2 id="m1t">تعديل السجل</h2><div class="fm">
+<label>الدائرة</label><input id="eD"><label>القسم</label><input id="eS"><label>نوع الشهادة</label><input id="eC">
+<label>العدد</label><input id="eN"><label>السنة</label><select id="eY"><option>2020</option><option>2021</option><option>2022</option><option>2023</option><option>2024</option><option>2025</option><option>2026</option><option>2027</option><option>2028</option><option>2029</option><option>2030</option></select>
+<label>الإيرادات</label><input id="eR"><label>مدخل البيانات</label><input id="eB">
+<label>نبذة عن القسم (تعريف مهام ووظائف القسم)</label><textarea id="eT" rows="4"></textarea>
+</div><div class="ac"><button class="b3" onclick="saveEntry()">💾 حفظ وإغلاق</button></div></div></div>
+
+<div class="ov" id="m2"><div class="md"><button class="x" onclick="cl('m2')">✖</button><h2 id="dt">قسم السلامة البحرية — دائرة الملاحة و السلامة البحرية</h2><p id="dd" style="line-height:2">قسم السلامة البحرية يعنى بتصاريح السفن الاجنبية العاملة في البحر الاقليمي لسلطنة عمان كما يتم اصدار شهادات عدم الممانعة لمياه الصابورة و اصدار تأشيرات طاقم السفن الاجنبية العاملة في البحر الاقليمي لسلطنة عمان</p></div></div>
+
+<div class="ov" id="m3"><div class="md w"><button class="x" onclick="cl('m3')">✖</button><h2>تعديل كافة البيانات</h2><div class="tw"><table id="at"></table></div><div class="ac"><button class="b3" onclick="saveAll()">💾 حفظ وإغلاق</button></div></div></div>
+
+<div id="tt"></div>
+<button id="cb" onclick="cw.classList.toggle('on')">💬</button>
+<div class="gl" id="cw"><div class="h">🤖 المساعد الذكي / Smart Assistant</div><div id="cm"></div><div class="f"><input id="ci" placeholder="اسأل / Ask..." onkeydown="if(event.key=='Enter')ask()"><button onclick="ask()">➤</button></div></div>
+
+<script id="data" type="application/json">{"theme":"neon","next":32,"rows":[{"d":"دائرة الملاحة و السلامة البحرية","s":"قسم السلامة البحرية","c":"ترخيص ملاحي للسفن الاجنبية","n":373,"y":2025,"r":338116,"b":"احمد الغساني","t":"قسم السلامة البحرية يعنى بتصاريح السفن الاجنبية العاملة في البحر الاقليمي لسلطنة عمان كما يتم اصدار شهادات عدم الممانعة لمياه الصابورة و اصدار تأشيرات طاقم السفن الاجنبية العاملة في البحر الاقليمي لسلطنة عمان","id":13},{"d":"دائرة الملاحة و السلامة البحرية","s":"قسم السلامة البحرية","c":"شهادة مياه الصابورة","n":6,"y":2025,"r":600,"b":"احمد الغساني","t":"قسم السلامة البحرية يعنى بتصاريح السفن الاجنبية العاملة في البحر الاقليمي لسلطنة عمان كما يتم اصدار شهادات عدم الممانعة لمياه الصابورة و اصدار تأشيرات طاقم السفن الاجنبية العاملة في البحر الاقليمي لسلطنة عمان","id":14},{"d":"دائرة الملاحة و السلامة البحرية","s":"قسم السلامة البحرية","c":"تركيب المساعدات الملاحية","n":17,"y":2025,"r":850,"b":"احمد الغساني","t":"قسم السلامة البحرية يعنى بتصاريح السفن الاجنبية العاملة في البحر الاقليمي لسلطنة عمان كما يتم اصدار شهادات عدم الممانعة لمياه الصابورة و اصدار تأشيرات طاقم السفن الاجنبية العاملة في البحر الاقليمي لسلطنة عمان","id":15},{"d":"دائرة الملاحة و السلامة البحرية","s":"قسم السلامة البحرية","c":"تاشيرات اطقم السفن","n":533,"y":2025,"r":0,"b":"احمد الغساني","t":"قسم السلامة الببحرية يعني بتصاريح السفن الاجنبية العاملة في البحر الاقليمي ل سلطنة عمان كما يتم اصدار شهادات عدم الممانعة لمياه الصابورة و اصدار تأشيرات طاقم السفن الاجنبية العاملة في البحر الاقليمي لسلطنة عمان","id":16},{"d":"دائرة الملاحة و السلامة البحرية","s":"أمن السفن والموانئ","c":"شهادة الامتثال الأمنية","n":14,"y":2025,"r":0,"b":"احمد الغساني","t":"","id":17},{"d":"دائرة الملاحة و السلامة البحرية","s":"أمن السفن والموانئ","c":"تصاريح السفن الدبلوماسية","n":270,"y":2025,"r":8000,"b":"احمد الغساني","t":"","id":18},{"d":"دائرة النقل البحري","s":"الأنشطة البحرية","c":"الأنشطة البحرية","n":2162,"y":2025,"r":178211,"b":"احمد الغساني","t":"","id":19},{"d":"دائرة النقل البحري","s":"شؤون البحارة","c":"وثائق البحارة","n":1925,"y":2025,"r":54650,"b":"احمد الغساني","t":"","id":20},{"d":"دائرة النقل البحري","s":"أقسام تسجيل السفن","c":"تسجيل-تجديد السفن","n":3148,"y":2025,"r":503342,"b":"احمد الغساني","t":"","id":21},{"d":"دائرة الملاحة و السلامة البحرية","s":"قسم السلامة البحرية","c":"ترخيص ملاحي للسفن الاجنبية","n":273,"y":2026,"r":207613,"b":"احمد الغساني","t":"قسم السلامة البحرية يعنى بتصاريح السفن الاجنبية العاملة في البحر الاقليمي لسلطنة عمان كما يتم اصدار شهادات عدم الممانعة لمياه الصابورة و اصدار تأشيرات طاقم السفن الاجنبية العاملة في البحر الاقليمي لسلطنة عمان","id":23},{"d":"دائرة الملاحة و السلامة البحرية","s":"قسم السلامة البحرية","c":"شهادة مياه الصابورة","n":6,"y":2026,"r":600,"b":"احمد الغساني","t":"قسم السلامة البحرية يعنى بتصاريح السفن الاجنبية العاملة في البحر الاقليمي لسلطنة عمان كما يتم اصدار شهادات عدم الممانعة لمياه الصابورة و اصدار تأشيرات طاقم السفن الاجنبية العاملة في البحر الاقليمي لسلطنة عمان","id":24},{"d":"دائرة الملاحة و السلامة البحرية","s":"قسم السلامة البحرية","c":"تركيب المساعدات الملاحية","n":0,"y":2026,"r":0,"b":"احمد الغساني","t":"قسم السلامة البحرية يعنى بتصاريح السفن الاجنبية العاملة في البحر الاقليمي لسلطنة عمان كما يتم اصدار شهادات عدم الممانعة لمياه الصابورة و اصدار تأشيرات طاقم السفن الاجنبية العاملة في البحر الاقليمي لسلطنة عمان","id":25},{"d":"دائرة الملاحة و السلامة البحرية","s":"قسم السلامة البحرية","c":"تاشيرات اطقم السفن","n":78,"y":2026,"r":0,"b":"احمد الغساني","t":"قسم السلامة البحرية يعنى بتصاريح السفن الاجنبية العاملة في البحر الاقليمي لسلطنة عمان كما يتم اصدار شهادات عدم الممانعة لمياه الصابورة و اصدار تأشيرات طاقم السفن الاجنبية العاملة في البحر الاقليمي لسلطنة عمان","id":26},{"d":"دائرة الملاحة و السلامة البحرية","s":"أمن السفن والموانئ","c":"شهادة الامتثال الأمنية","n":8,"y":2026,"r":10200,"b":"احمد الغساني","t":"","id":27},{"d":"دائرة الملاحة و السلامة البحرية","s":"أمن السفن والموانئ","c":"تصاريح السفن الدبلوماسية","n":78,"y":2026,"r":0,"b":"احمد الغساني","t":"","id":28},{"d":"دائرة النقل البحري","s":"الأنشطة البحرية","c":"الأنشطة البحرية","n":1358,"y":2026,"r":114963,"b":"احمد الغساني","t":"","id":29},{"d":"دائرة النقل البحري","s":"شؤون البحارة","c":"وثائق البحارة","n":1924,"y":2026,"r":58775,"b":"احمد الغساني","t":"","id":30},{"d":"دائرة النقل البحري","s":"أقسام تسجيل السفن","c":"تسجيل-تجديد السفن","n":825,"y":2026,"r":196915,"b":"احمد الغساني","t":"","id":31}]}</script>
+
+<script>
+const $=i=>document.getElementById(i),cw=$('cw'),S=JSON.parse($('data').textContent),C=['#00f0ff','#b55fe6','#00ff9d','#ff007f','#ffd400','#ff8a00'],TH=['neon','glass','bright'],YR=[...Array(11)].map((_,i)=>2020+i);
+let eid=null;const f=n=>Number(n).toLocaleString('en-US'),U=a=>[...new Set(a)],sy=()=>{$('data').textContent=JSON.stringify(S)};
+
+// روابط أزرار Option 1-4: غيّر الروابط هنا (تفتح في تبويب جديد لأن أغلب المواقع تمنع العرض داخل iframe)
+const LINKS={1:'https://bronze-lanita-8.tiiny.site',2:'https://story.mapog.com/public/attck/MjM3ODQ4',3:'https://eoffice.mtcit.gov.om/mot/GAMC/%D8%AF%D8%A7%D8%A6%D8%B1%D8%A9%20%D8%A7%D9%84%D8%B3%D9%84%D8%A7%D9%85%D8%A9%20%D9%88%D8%A7%D9%84%D9%85%D9%84%D8%A7%D8%AD%D8%A9%20%D8%A7%D9%84%D8%A8%D8%AD%D8%B1%D9%8A%D8%A9/%D8%AF%D8%A7%D8%A6%D8%B1%D8%A9%20%D8%A7%D9%84%D9%85%D9%84%D8%A7%D8%AD%D8%A9%20%D9%88%D8%A7%D9%84%D8%B3%D9%84%D8%A7%D9%85%D8%A9%20%D8%A7%D9%84%D8%A8%D8%AD%D8%B1%D9%8A%D8%A9/%D8%A7%D9%84%D8%AF%D9%84%D9%8A%D9%84%20%D8%A7%D9%84%D8%A7%D8%B3%D8%AA%D8%B1%D8%B4%D8%A7%D8%AF%D9%8A/%D8%A7%D9%84%D8%AF%D9%84%D9%8A%D9%84%20%D8%A7%D9%84%D8%A7%D8%B3%D8%AA%D8%B1%D8%B4%D8%A7%D8%AF%D9%8A%20%D8%AA%D8%B5%D9%85%D9%8A%D9%85%D9%8A.docx',4:'https://www.google.com'};
+
+const num=v=>+String(v).replace(/[٠-٩]/g,d=>'٠١٢٣٤٥٦٧٨٩'.indexOf(d)).replace(/[,٬\s]/g,'')||0;
+const esc=s=>String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+
+function getSectionGlassStyle(sectionName){
+  const sections=U(S.rows.map(x=>x.s));
+  const idx=sections.indexOf(sectionName);
+  const color=C[idx>=0?idx%C.length:0];
+  return `background:${color}1f;border-right:4px solid ${color};`;
+}
+
+function cl(i){$(i).classList.remove('on')}
+function openWeb(n){window.open(LINKS[n],'_blank','noopener')}
+
+function toast(t,e){const d=document.createElement('div');d.className='t'+(e?' e':'');d.textContent=t;$('tt').append(d);setTimeout(()=>d.remove(),2800)}
+function setTheme(t){document.documentElement.dataset.theme=S.theme=t}
+function nextTheme(){setTheme(TH[(TH.indexOf(S.theme)+1)%3]);sy();toast('تم تغيير الثيم')}
+const grp=(R,k,v)=>{const m={};R.forEach(x=>m[x[k]]=(m[x[k]]||0)+(v=='r'?x.r:v=='n'?x.n:1));return Object.entries(m)};
+function opt(id,a,all){const e=$(id),v=e.value;e.innerHTML=`<option value="">${all}</option>`+a.map(x=>`<option>${esc(x)}</option>`).join('');e.value=v}
+function rows(){const q=$('q').value.trim().toLowerCase(),y=$('fy').value,c=$('fc').value,s=$('fs').value,d=$('fd').value;
+return S.rows.filter(x=>(!y||x.y==y)&&(!c||x.c==c)&&(!s||x.s==s)&&(!d||x.d==d)&&(!q||Object.values(x).join(' ').toLowerCase().includes(q)))}
+
+function bar(el,D){const m=Math.max(...D.map(d=>d[1]),1),w=380/Math.max(D.length,1);el.innerHTML=`<svg viewBox="0 0 400 240">${D.map((d,i)=>{const h=d[1]/m*150,x=10+i*w,bw=Math.max(w-12,4);return `<rect class="bb" x="${x}" y="${190-h}" width="${bw}" height="${h}" rx="5" fill="${C[i%6]}" style="filter:drop-shadow(0 0 6px ${C[i%6]});animation-delay:${i*.1}s"><title>${esc(d[0])}:${f(d[1])}</title></rect><text x="${x+bw/2}" y="${183-h}" text-anchor="middle">${f(d[1])}</text><text x="${x+bw/2}" y="206" text-anchor="middle">${esc(String(d[0]).replace('قسم ',''))}</text>`}).join('')}</svg>`}
+
+const wr=(t,m)=>{const L=[];let c='';String(t).split(' ').forEach(w=>{if(c&&(c+' '+w).length>m){L.push(c);c=w}else c=(c?c+' ':'')+w});if(c)L.push(c);return L};
+// وسيلة إيضاح: المربع الملوّن ثم الاسم مباشرة على يساره (اتجاه RTL: start = الطرف الأيمن للنص)
+const leg=(D,xs,xt,max)=>{let y=14;return D.map((d,i)=>{const L=wr(d[0]+' ('+f(d[1])+')',max),h=L.length*13,out=`<rect x="${xs}" y="${y}" width="11" height="11" rx="3" fill="${C[i%6]}"/><text x="${xt}" y="${y+9}" text-anchor="start">${L.map((l,k)=>`<tspan x="${xt}" dy="${k?13:0}">${esc(l)}</tspan>`).join('')}</text>`;y+=Math.max(h,13)+11;return out}).join('')};
+
+function dn(el,D){const t=D.reduce((a,d)=>a+d[1],0)||1,cx=300,cy=120;let a=-Math.PI/2;const P=(g,r)=>[cx+r*Math.cos(g),cy+r*Math.sin(g)];
+const p=D.map((d,i)=>{const b=a+Math.min(d[1]/t,.9999)*Math.PI*2,l=b-a>Math.PI?1:0,A=P(a,90),B=P(b,90),Cc=P(b,52),Dd=P(a,52);a=b;return `<path class="sl" fill="${C[i%6]}" d="M${A}A90,90 0 ${l} 1 ${B}L${Cc}A52,52 0 ${l} 0 ${Dd}Z"><title>${esc(d[0])}: ${f(d[1])} (${Math.round(d[1]/t*100)}%)</title></path>`}).join('');
+el.innerHTML=`<svg viewBox="0 0 400 240">${p}<text x="${cx}" y="${cy+5}" text-anchor="middle" style="font-size:14px;font-weight:700">${f(t)}</text>${leg(D,196,190,28)}</svg>`}
+
+function prog(el,D){const m=Math.max(...D.map(d=>d[1]),1),t=D.reduce((a,d)=>a+d[1],0)||1;el.innerHTML=D.map((d,i)=>`<div class="pr">${esc(d[0])} — ${f(d[1])} شهادة (${Math.round(d[1]/t*100)}%)<div><u style="width:${d[1]/m*100}%;background:${C[i%6]};box-shadow:0 0 8px ${C[i%6]}"></u></div></div>`).join('')||'—'}
+
+function fun(el,R){const D=YR.map(y=>[y,R.filter(x=>x.y==y).reduce((a,x)=>a+x.r,0),R.filter(x=>x.y==y).reduce((a,x)=>a+x.n,0)]),m=Math.max(...D.map(d=>d[1]),1);
+el.innerHTML=`<svg viewBox="0 0 400 240">${D.map((d,i)=>{const w=Math.max(d[1]/m*260,6);return `<rect class="sl" x="${200-w/2}" y="${i*21.5}" width="${w}" height="18" rx="4" fill="${C[i%6]}" opacity=".85"><title>${d[0]}: ${f(d[1])} /${d[2]}</title></rect><text x="395" y="${i*21.5+13}" text-anchor="end">${d[0]}</text><text x="200" y="${i*21.5+13}" text-anchor="middle" style="fill:#041020;font-weight:700">${d[1]?f(d[1])+' | '+d[2]:''}</text>`}).join('')}</svg>`}
+
+function ring(el,D){
+  const D6=[...D].sort((a,b)=>b[1]-a[1]).slice(0,6),t=Math.max(...D6.map(d=>d[1]),1),cx=292,cy=120;
+  el.innerHTML=`<svg viewBox="0 0 400 240">
+    <g transform="rotate(-90 ${cx} ${cy})">
+      ${D6.map((d,i)=>{const r=100-i*15,L=2*Math.PI*r;return `<circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="${C[i]}" opacity=".15" stroke-width="10"/><circle class="sl" cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="${C[i]}" stroke-width="10" stroke-linecap="round" stroke-dasharray="${L*d[1]/t*.92} ${L}" style="filter:drop-shadow(0 0 5px ${C[i]})"><title>${esc(d[0])}:${d[1]}</title></circle>`}).join('')}
+    </g>
+    ${leg(D6,176,170,26)}
+  </svg>`;
+}
+
+// حلقات كبيرة: تستوعب أي عدد من الشهادات (30 أو أكثر) وتتوسع تلقائياً
+const col=i=>i<6?C[i]:`hsl(${(i*47)%360} 85% 60%)`,tr=(s,m)=>String(s).length>m?String(s).slice(0,m-1)+'…':String(s);
+function ringBig(el,D){
+  const A=[...D].sort((a,b)=>b[1]-a[1]);
+  if(!A.length){el.innerHTML='—';return}
+  const N=A.length,t=Math.max(...A.map(d=>d[1]),1),rows=Math.ceil(N/2),H=Math.max(340,rows*19+30),cx=730,cy=H/2,R=Math.min(160,H/2-10),st=Math.min(14,(R-15)/N),sw=Math.max(2,st-1.5);
+  const rings=A.map((d,i)=>{const r=R-i*st,L=2*Math.PI*r;return `<circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="${col(i)}" opacity=".15" stroke-width="${sw}"/><circle class="sl" cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="${col(i)}" stroke-width="${sw}" stroke-linecap="round" stroke-dasharray="${L*d[1]/t*.92} ${L}"><title>${esc(d[0])}: ${f(d[1])}</title></circle>`}).join('');
+  const lg=A.map((d,i)=>{const c=Math.floor(i/rows),k=i%rows,xs=550-c*268,xt=xs-6,y=16+k*19;return `<rect x="${xs}" y="${y}" width="10" height="10" rx="3" fill="${col(i)}"/><text x="${xt}" y="${y+9}" text-anchor="start" style="font-size:10.5px"><title>${esc(d[0])}</title>${esc(tr(d[0],32))} (${f(d[1])})</text>`}).join('');
+  el.innerHTML=`<svg viewBox="0 0 900 ${H}"><g transform="rotate(-90 ${cx} ${cy})">${rings}</g>${lg}</svg>`;
+}
+
+function rad(el,R){const S2=U(R.map(x=>x.s));if(S2.length<3){el.innerHTML='<p style="color:var(--mu)">يلزم 3 أقسام على الأقل لعرض الرادار</p>';return}
+const a=S2.map(s=>R.filter(x=>x.s==s).reduce((t,x)=>t+x.n,0)),b=S2.map(s=>R.filter(x=>x.s==s).reduce((t,x)=>t+x.r,0)),ma=Math.max(...a,1),mb=Math.max(...b,1),n=S2.length,cx=292,cy=122,P=(i,v)=>[cx+v*85*Math.sin(2*Math.PI*i/n),cy-v*85*Math.cos(2*Math.PI*i/n)];
+const poly=(arr,mx,c)=>`<polygon class="sl" points="${arr.map((v,i)=>P(i,v/mx)).join(' ')}" fill="${c}" fill-opacity=".25" stroke="${c}" stroke-width="2" style="filter:drop-shadow(0 0 5px ${c})"/>`;
+// الشكل يمين، ثم على يساره مباشرة: وسيلة الإيضاح (أرقام الأقسام) — لا شيء يخرج من الإطار
+let y=52;const names=S2.map((s,i)=>{const L=wr(s.replace('قسم ',''),24),out=`<circle cx="182" cy="${y+5}" r="8" fill="none" stroke="var(--c1)"/><text x="182" y="${y+8.5}" text-anchor="middle" style="font-size:10px">${i+1}</text><text x="168" y="${y+9}" text-anchor="start">${L.map((l,k)=>`<tspan x="168" dy="${k?13:0}">${esc(l)}</tspan>`).join('')}</text>`;y+=Math.max(L.length*13,13)+12;return out}).join('');
+el.innerHTML=`<svg viewBox="0 0 400 240">${[.33,.66,1].map(k=>`<polygon points="${S2.map((_,i)=>P(i,k)).join(' ')}" fill="none" stroke="var(--bd)"/>`).join('')}${S2.map((s,i)=>`<line x1="${cx}" y1="${cy}" x2="${P(i,1)[0]}" y2="${P(i,1)[1]}" stroke="var(--bd)"/><text x="${P(i,1.14)[0]}" y="${P(i,1.14)[1]+4}" text-anchor="middle" style="font-size:10px;fill:var(--c1)">${i+1}</text>`).join('')}${poly(a,ma,C[0])}${poly(b,mb,C[3])}<rect x="176" y="4" width="11" height="11" rx="3" fill="${C[0]}"/><text x="170" y="13" text-anchor="start">الشهادات</text><rect x="176" y="24" width="11" height="11" rx="3" fill="${C[3]}"/><text x="170" y="33" text-anchor="start">الإيرادات</text>${names}</svg>`}
+
+function render(){
+opt('fy',YR,'كل السنوات');opt('fc',U(S.rows.map(x=>x.c)),'كل الشهادات');opt('fs',U(S.rows.map(x=>x.s)),'كل الأقسام');opt('fd',U(S.rows.map(x=>x.d)),'كل الدوائر');
+const A=S.rows,R=rows(),Y=grp(A,'y','r').sort((a,b)=>a[0]-b[0]).slice(-2);
+$('k1').textContent=f(A.reduce((a,x)=>a+x.r,0));$('k2').textContent=f(A.reduce((a,x)=>a+x.n,0));$('k3').textContent=U(A.map(x=>x.s)).length;
+$('k4').textContent=Y.length==2&&Y[0][1]?Math.round(Y[1][1]/Y[0][1]*100)+'%':'—';
+bar($('c1'),grp(R,'s','r'));dn($('c2'),grp(R,'d','r'));prog($('c3'),grp(R,'s','n'));fun($('c4'),R);ring($('c5'),grp(R,'c','n'));rad($('c6'),R);ringBig($('c7'),grp(R,'c','n'));
+
+$('tb').innerHTML=R.map(x=>`<tr style="${getSectionGlassStyle(x.s)}"><td>${esc(x.d)}</td><td><span class="sc" onclick="info(${x.id})">${esc(x.s)}</span></td><td>${esc(x.c)}</td><td>${f(x.n)}</td><td>${x.y}</td><td>${f(x.r)}</td><td>${esc(x.b)}</td><td><button class="ib icon-edit" title="تعديل" onclick="openEntry(${x.id})">✏️</button><button class="ib" title="حذف" onclick="del(${x.id})">🗑️</button></td></tr>`).join('')||'<tr><td colspan="8" style="text-align:center">لا توجد نتائج</td></tr>'}
+
+function info(id){const x=S.rows.find(r=>r.id==id);$('dt').textContent=x.s+' — '+x.d;$('dd').textContent=x.t||'لا توجد نبذة مكتوبة لهذا القسم.';$('m2').classList.add('on')}
+
+function openEntry(id){eid=id||null;const x=S.rows.find(r=>r.id==id)||{};$('eY').innerHTML=YR.map(y=>`<option>${y}</option>`).join('');
+$('eD').value=x.d||'';$('eS').value=x.s||'';$('eC').value=x.c||'';$('eN').value=x.n||'';$('eY').value=x.y||2026;$('eR').value=x.r||'';$('eB').value=x.b||'';$('eT').value=x.t||'';
+$('m1t').textContent=id?'تعديل السجل':'إدخال البيانات';$('m1').classList.add('on')}
+
+function saveEntry(){const r={d:$('eD').value.trim(),s:$('eS').value.trim(),c:$('eC').value.trim(),n:num($('eN').value),y:+$('eY').value,r:num($('eR').value),b:$('eB').value.trim(),t:$('eT').value.trim()};
+if(!r.d||!r.s||!r.c||!r.b)return toast('يرجى تعبئة الدائرة والقسم والشهادة والمدخل',1);
+if(eid)Object.assign(S.rows.find(x=>x.id==eid),r);else{r.id=S.next++;S.rows.push(r)}
+sy();cl('m1');render();toast('تم الحفظ بنجاح ✔')}
+
+function del(id){if(!confirm('حذف هذا السجل؟'))return;S.rows=S.rows.filter(x=>x.id!=id);sy();render();toast('تم الحذف',1)}
+
+function openAll(){const k=['d','s','c','n','y','r','b','t'];$('at').innerHTML='<tr><th>الدائرة</th><th>القسم</th><th>الشهادة</th><th>العدد</th><th>السنة</th><th>الإيرادات</th><th>المدخل</th><th>نبذة</th></tr>'+S.rows.map(x=>`<tr data-i="${x.id}">${k.map(c=>`<td><input value="${esc(x[c])}" style="width:${c=='t'?220:c=='y'||c=='n'?70:130}px"></td>`).join('')}</tr>`).join('');$('m3').classList.add('on')}
+
+function saveAll(){document.querySelectorAll('#at tr[data-i]').forEach(tr=>{const v=[...tr.querySelectorAll('input')].map(i=>i.value),x=S.rows.find(r=>r.id==tr.dataset.i);Object.assign(x,{d:v[0],s:v[1],c:v[2],n:num(v[3]),y:num(v[4]),r:num(v[5]),b:v[6],t:v[7]})});sy();cl('m3');render();toast('تم حفظ كافة التعديلات ✔')}
+
+function dl(){
+  sy();
+  const c=document.documentElement.cloneNode(true);
+  c.querySelector('#cm').innerHTML='';
+  c.querySelector('#tt').innerHTML='';
+  c.querySelector('#at').innerHTML='';
+  c.querySelectorAll('.on').forEach(e=>e.classList.remove('on'));
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(new Blob(['<!DOCTYPE html>\n'+c.outerHTML],{type:'text/html'}));
+  a.download='index.html';
+  document.body.append(a);a.click();a.remove();
+  toast('تم تنزيل الصفحة المحدثة');
+}
+
+function msg(t,c){const d=document.createElement('div');d.className='m '+(c||'');d.textContent=t;$('cm').append(d);$('cm').scrollTop=1e9}
+
+function ask(){const q=$('ci').value.trim();if(!q)return;$('ci').value='';msg(q,'u');const ar=/[\u0600-\u06FF]/.test(q),L=q.toLowerCase(),R=S.rows,y=(q.match(/20[2-3]\d/)||[])[0];
+const hit=R.filter(x=>[x.s,x.d,x.c,x.b].some(v=>v&&(L.includes(v.toLowerCase())||L.includes(v.replace(/^(قسم|دائرة|شهادة)\s/,'').toLowerCase())))),pool=hit.length?hit:R,sub=y?pool.filter(x=>x.y==y):pool,
+rv=sub.reduce((a,x)=>a+x.r,0),nc=sub.reduce((a,x)=>a+x.n,0),lab=(hit.length?(ar?' لـ ':' for ')+U(hit.map(x=>x.s)).join('، '):'')+(y?(ar?' في ':' in ')+y:'');let a;
+if(/وصف|نبذة|مهام|تعريف|about|describe|description/.test(L)&&hit.length)a=hit[0].s+': '+(hit[0].t||'—');
+else if(/أعلى|اعلى|أكثر|اكثر|top|highest|most|best/.test(L)){const g=grp(sub,'s','r').sort((a,b)=>b[1]-a[1])[0];a=g?(ar?`أعلى قسم إيراداً: ${g[0]} (${f(g[1])})`:`Top section by revenue: ${g[0]} (${f(g[1])})`):'—'}
+else if(/إيراد|ايراد|دخل|revenue|income/.test(L))a=ar?`إجمالي الإيرادات${lab}: ${f(rv)}`:`Total revenue${lab}: ${f(rv)}`;
+else if(/شهاد|certificate|cert/.test(L))a=ar?`عدد الشهادات${lab}: ${f(nc)}`:`Certificates${lab}: ${f(nc)}`;
+else if(/قسم|أقسام|دائر|section|department/.test(L))a=ar?`عدد الأقسام: ${U(R.map(x=>x.s)).length} — ${U(R.map(x=>x.s)).join('، ')}\nعدد الدوائر: ${U(R.map(x=>x.d)).length}`:`Sections: ${U(R.map(x=>x.s)).length}, departments: ${U(R.map(x=>x.d)).length}`;
+else if(hit.length||y)a=ar?`${f(sub.length)} سجل${lab}، الإيرادات ${f(rv)}، الشهادات ${f(nc)}`:`${sub.length} records${lab}: revenue ${f(rv)}, certificates ${f(nc)}`;
+else a=ar?'لم أجد ما يخص سؤالك في بيانات الصفحة. جرّب السؤال عن الإيرادات أو الشهادات أو قسم أو سنة معينة.':"I couldn't match that to the page data. Try asking about revenue, certificates, a section or a year.";
+setTimeout(()=>msg(a),250)}
+
+msg('مرحباً بك! 👋 أجيب عن جميع الأسئلة القريبة من البيانات الموجودة في الصفحة (الإيرادات، الشهادات، الأقسام، السنوات).\nHello! I answer any question related to the data on this page (revenue, certificates, sections, years) in Arabic or English.');
+setTheme(S.theme||'neon');render();
+</script>
+
+
+</body></html>
